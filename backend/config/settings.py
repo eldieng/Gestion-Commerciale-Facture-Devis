@@ -126,7 +126,13 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:5173',
+    'http://72.62.237.47',
 ]
+
+# Production settings
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['http://72.62.237.47', 'https://72.62.237.47']
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Company Settings
 COMPANY_NAME = 'MOULTAZAM DISTRIBUTION'

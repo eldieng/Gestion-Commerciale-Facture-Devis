@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn daemon for Moultazam Django App
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/moultazam/backend
+Environment="PATH=/var/www/moultazam/backend/venv/bin"
+ExecStart=/var/www/moultazam/backend/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8000 config.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
