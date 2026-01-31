@@ -61,14 +61,13 @@ pip install gunicorn psycopg2-binary
 
 # Créer le fichier .env si nécessaire
 if [ ! -f ".env" ]; then
-    echo "DEBUG=False" > .env
-    echo "SECRET_KEY=$(python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')" >> .env
-    echo "ALLOWED_HOSTS=72.62.237.47,localhost" >> .env
-    echo "DB_NAME=moultazam_db" >> .env
-    echo "DB_USER=moultazam_user" >> .env
-    echo "DB_PASSWORD=moultazam_password" >> .env
-    echo "DB_HOST=localhost" >> .env
-    echo "DB_PORT=5432" >> .env
+    SECRET=$(python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')
+    cat > .env << EOF
+DEBUG=False
+SECRET_KEY=$SECRET
+ALLOWED_HOSTS=72.62.237.47,localhost,127.0.0.1
+DATABASE_URL=postgresql://moultazam_user:moultazam_password@localhost:5432/moultazam_db
+EOF
 fi
 
 # Migrations et fichiers statiques
