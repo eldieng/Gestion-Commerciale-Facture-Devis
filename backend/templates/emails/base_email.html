@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Moultazam Distribution{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+        
+        /* Header */
+        .header {
+            padding: 20px 30px;
+            border-bottom: 3px solid #8DC63F;
+        }
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .header-table td {
+            vertical-align: top;
+        }
+        .logo-cell {
+            width: 50%;
+        }
+        .logo-cell img {
+            width: 180px;
+            height: auto;
+        }
+        .company-cell {
+            width: 50%;
+            text-align: right;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .slogan {
+            font-size: 11px;
+            color: #006B3F;
+            font-style: italic;
+            padding: 10px 30px;
+            background-color: #f9f9f9;
+        }
+        
+        /* Content */
+        .content {
+            padding: 30px;
+        }
+        .content h1 {
+            color: #006B3F;
+            font-size: 20px;
+            margin-top: 0;
+        }
+        .content p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .content a {
+            color: #006B3F;
+        }
+        
+        /* Button */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #006B3F;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .btn:hover {
+            background-color: #005530;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #f9f9f9;
+            padding: 20px 30px;
+            border-top: 1px solid #ddd;
+        }
+        .footer-contact {
+            font-size: 12px;
+            color: #006B3F;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .footer-bar {
+            background-color: #006B3F;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 11px;
+            text-align: center;
+        }
+        .footer-links {
+            text-align: center;
+            padding: 10px 0;
+        }
+        .footer-links a {
+            color: #006B3F;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <table class="header-table">
+                <tr>
+                    <td class="logo-cell">
+                        {% if logo_url %}
+                        <img src="{{ logo_url }}" alt="Moultazam Distribution">
+                        {% else %}
+                        <span style="font-size: 22px; font-weight: bold; color: #006B3F;">MOULTAZAM</span><br>
+                        <span style="font-size: 12px; color: #006B3F;">DISTRIBUTION</span>
+                        {% endif %}
+                    </td>
+                    <td class="company-cell">
+                        {{ company.address|default:"Parcelles Assainies Unité 08, Villa N° 289" }}<br>
+                        Dakar - Sénégal<br>
+                        NINEA: {{ company.ninea|default:"07225664" }}<br>
+                        RCCM: {{ company.rccm|default:"SN DKR 2025 A 45478" }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Slogan -->
+        <div class="slogan">
+            Distribution & Fournitures Industrielles
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            {% block content %}
+            <!-- Le contenu de l'email va ici -->
+            {% endblock %}
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-contact">
+                <strong>Contactez-nous:</strong><br>
+                📞 {{ company.phone|default:"+221 77 455 49 57" }} | {{ company.phone2|default:"+221 77 455 69 57" }}<br>
+                📧 {{ company.email|default:"djibriidagne1964@gmail.com" }}<br>
+                📍 {{ company.address|default:"Parcelles Assainies Unité 08, Villa N° 289, Dakar - Sénégal" }}
+            </div>
+            <div class="footer-bar">
+                MOULTAZAM DISTRIBUTION - Distribution & Fournitures Industrielles
+            </div>
+        </div>
+    </div>
+</body>
+</html>

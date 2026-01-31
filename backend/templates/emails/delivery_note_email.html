@@ -1,0 +1,41 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}Bon de Livraison {{ delivery_note.number }} - Moultazam Distribution{% endblock %}
+
+{% block content %}
+<h1>Bon de Livraison N° {{ delivery_note.number }}</h1>
+
+<p>Bonjour {{ delivery_note.client.name }},</p>
+
+<p>Veuillez trouver ci-joint le bon de livraison N° <strong>{{ delivery_note.number }}</strong> pour votre commande.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr style="background-color: #006B3F; color: white;">
+        <td style="padding: 10px; font-weight: bold;">Détails de la livraison</td>
+        <td style="padding: 10px; text-align: right;"></td>
+    </tr>
+    <tr style="background-color: #f9f9f9;">
+        <td style="padding: 10px;">Numéro du bon</td>
+        <td style="padding: 10px; text-align: right;">{{ delivery_note.number }}</td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">Date</td>
+        <td style="padding: 10px; text-align: right;">{{ delivery_note.date|date:"d/m/Y" }}</td>
+    </tr>
+    {% if delivery_note.delivered_by %}
+    <tr style="background-color: #f9f9f9;">
+        <td style="padding: 10px;">Livré par</td>
+        <td style="padding: 10px; text-align: right;">{{ delivery_note.delivered_by }}</td>
+    </tr>
+    {% endif %}
+</table>
+
+<p style="background-color: #e8f5e9; padding: 15px; border-left: 4px solid #8DC63F; margin: 20px 0;">
+    <strong>📦 Important:</strong> Merci de vérifier la marchandise à la réception et de signer le bon de livraison.
+</p>
+
+<p>Pour toute question concernant cette livraison, n'hésitez pas à nous contacter.</p>
+
+<p>Cordialement,<br>
+<strong>L'équipe Moultazam Distribution</strong></p>
+{% endblock %}

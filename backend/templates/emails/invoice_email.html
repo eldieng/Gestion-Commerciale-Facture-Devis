@@ -1,0 +1,47 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}Facture {{ invoice.number }} - Moultazam Distribution{% endblock %}
+
+{% block content %}
+<h1>Votre Facture N° {{ invoice.number }}</h1>
+
+<p>Bonjour {{ invoice.client.name }},</p>
+
+<p>Veuillez trouver ci-joint votre facture N° <strong>{{ invoice.number }}</strong> datée du {{ invoice.date|date:"d/m/Y" }}.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr style="background-color: #006B3F; color: white;">
+        <td style="padding: 10px; font-weight: bold;">Détails de la facture</td>
+        <td style="padding: 10px; text-align: right;"></td>
+    </tr>
+    <tr style="background-color: #f9f9f9;">
+        <td style="padding: 10px;">Numéro de facture</td>
+        <td style="padding: 10px; text-align: right;">{{ invoice.number }}</td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">Date</td>
+        <td style="padding: 10px; text-align: right;">{{ invoice.date|date:"d/m/Y" }}</td>
+    </tr>
+    <tr style="background-color: #f9f9f9;">
+        <td style="padding: 10px;">Total HT</td>
+        <td style="padding: 10px; text-align: right;">{{ invoice.total_ht|floatformat:0 }} FCFA</td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">TVA (18%)</td>
+        <td style="padding: 10px; text-align: right;">{{ invoice.total_tva|floatformat:0 }} FCFA</td>
+    </tr>
+    <tr style="background-color: #8DC63F; color: white; font-weight: bold;">
+        <td style="padding: 10px;">Total TTC</td>
+        <td style="padding: 10px; text-align: right;">{{ invoice.total_ttc|floatformat:0 }} FCFA</td>
+    </tr>
+</table>
+
+{% if invoice.due_date %}
+<p><strong>Date d'échéance:</strong> {{ invoice.due_date|date:"d/m/Y" }}</p>
+{% endif %}
+
+<p>Pour toute question concernant cette facture, n'hésitez pas à nous contacter.</p>
+
+<p>Cordialement,<br>
+<strong>L'équipe Moultazam Distribution</strong></p>
+{% endblock %}

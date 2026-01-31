@@ -1,0 +1,47 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}Devis {{ proforma.number }} - Moultazam Distribution{% endblock %}
+
+{% block content %}
+<h1>Votre Devis N° {{ proforma.number }}</h1>
+
+<p>Bonjour {{ proforma.client.name }},</p>
+
+<p>Suite à votre demande, veuillez trouver ci-joint notre devis N° <strong>{{ proforma.number }}</strong> datée du {{ proforma.date|date:"d/m/Y" }}.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr style="background-color: #006B3F; color: white;">
+        <td style="padding: 10px; font-weight: bold;">Détails du devis</td>
+        <td style="padding: 10px; text-align: right;"></td>
+    </tr>
+    <tr style="background-color: #f9f9f9;">
+        <td style="padding: 10px;">Numéro de devis</td>
+        <td style="padding: 10px; text-align: right;">{{ proforma.number }}</td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">Date</td>
+        <td style="padding: 10px; text-align: right;">{{ proforma.date|date:"d/m/Y" }}</td>
+    </tr>
+    <tr style="background-color: #f9f9f9;">
+        <td style="padding: 10px;">Total HT</td>
+        <td style="padding: 10px; text-align: right;">{{ proforma.total_ht|floatformat:0 }} FCFA</td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">TVA (18%)</td>
+        <td style="padding: 10px; text-align: right;">{{ proforma.total_tva|floatformat:0 }} FCFA</td>
+    </tr>
+    <tr style="background-color: #8DC63F; color: white; font-weight: bold;">
+        <td style="padding: 10px;">Total TTC</td>
+        <td style="padding: 10px; text-align: right;">{{ proforma.total_ttc|floatformat:0 }} FCFA</td>
+    </tr>
+</table>
+
+<p style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0;">
+    <strong>⏰ Validité:</strong> Ce devis est valable 30 jours à compter de sa date d'émission.
+</p>
+
+<p>Pour confirmer votre commande, merci de nous retourner ce devis signé avec la mention "Bon pour accord".</p>
+
+<p>Cordialement,<br>
+<strong>L'équipe Moultazam Distribution</strong></p>
+{% endblock %}

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bordereau {{ delivery_note.number }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0.8cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 10px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+        }
+        
+        /* Header */
+        .header-table {
+            margin-bottom: 5px;
+            border-bottom: 2px solid #8DC63F;
+            padding-bottom: 10px;
+        }
+        .header-table td {
+            vertical-align: top;
+        }
+        .logo-cell {
+            width: 55%;
+        }
+        .logo-cell img {
+            width: 180px;
+            height: auto;
+        }
+        .company-cell {
+            width: 45%;
+            text-align: right;
+            font-size: 9px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        /* Titre */
+        .title-bar {
+            background-color: #006B3F;
+            color: white;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+        
+        /* Tableau articles */
+        .items-table {
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .items-table th {
+            background-color: #006B3F;
+            color: white;
+            padding: 8px 5px;
+            text-align: center;
+            font-size: 9px;
+            font-weight: bold;
+        }
+        .items-table td {
+            padding: 10px 5px;
+            border-left: 1px solid #006B3F;
+            border-right: 1px solid #006B3F;
+            border-bottom: 1px solid #ddd;
+            font-size: 10px;
+        }
+        .items-table tr:last-child td {
+            border-bottom: 1px solid #006B3F;
+        }
+        .items-table .col-num { width: 30px; text-align: center; }
+        .items-table .col-desc { text-align: left; }
+        .items-table .col-qty { width: 50px; text-align: center; }
+        .items-table .col-obs { width: 150px; text-align: left; }
+        
+        /* Signatures */
+        .signatures-table {
+            margin-top: 20px;
+        }
+        .signatures-table td {
+            width: 50%;
+            padding: 8px;
+            vertical-align: top;
+        }
+        .signature-box {
+            border: 1px solid #006B3F;
+            padding: 10px;
+            min-height: 60px;
+        }
+        .signature-title {
+            font-weight: bold;
+            color: #006B3F;
+            font-size: 9px;
+            margin-bottom: 5px;
+        }
+        .signature-line {
+            border-bottom: 1px dashed #999;
+            height: 40px;
+        }
+        
+        /* Footer */
+        .footer-section {
+            position: absolute;
+            bottom: 25px;
+            left: 25px;
+            right: 25px;
+        }
+        .footer-contact {
+            text-align: left;
+            font-size: 9px;
+            color: #006B3F;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        .footer-bar {
+            background-color: #006B3F;
+            color: white;
+            padding: 5px 10px;
+            font-size: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <table class="header-table">
+        <tr>
+            <td class="logo-cell">
+                {% if logo_base64 %}
+                <img src="data:image/{{ logo_type }};base64,{{ logo_base64 }}" alt="Moultazam">
+                {% else %}
+                <span style="font-size: 20px; font-weight: bold; color: #006B3F;">MOULTAZAM</span><br>
+                <span style="font-size: 10px; color: #006B3F;">DISTRIBUTION</span>
+                {% endif %}
+            </td>
+            <td class="company-cell">
+                {{ company.address }}<br>
+                NINEA: {{ company.ninea }}<br>
+                RCCM: {{ company.rccm }}
+            </td>
+        </tr>
+    </table>
+    
+    <!-- Slogan -->
+    <div style="font-size: 9px; color: #006B3F; font-style: italic; margin-bottom: 15px;">
+        Distribution & Fournitures Industrielles
+    </div>
+
+    <!-- Titre -->
+    <div class="title-bar">BON DE LIVRAISON</div>
+
+    <!-- Infos document -->
+    <table style="margin-bottom: 15px;">
+        <tr>
+            <td style="width: 50%;">
+                <strong>BON N°:</strong> <span style="border-bottom: 1px solid #333;">{{ delivery_note.number }}</span>
+            </td>
+            <td style="width: 50%; text-align: right;">
+                <strong>DAKAR, LE</strong> <span style="border-bottom: 1px solid #333;">{{ delivery_note.date|date:"d/m/Y" }}</span>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Client -->
+    <table style="margin-bottom: 10px;">
+        <tr>
+            <td><strong>CLIENT:</strong> {{ delivery_note.client.name }}</td>
+        </tr>
+        <tr>
+            <td><strong>ADRESSE:</strong> {% if delivery_note.client.address %}{{ delivery_note.client.address }}{% endif %}</td>
+        </tr>
+        {% if delivery_note.payment_method %}
+        <tr>
+            <td><strong>MODE DE PAIEMENT:</strong> {{ delivery_note.get_payment_method_display }}</td>
+        </tr>
+        {% endif %}
+    </table>
+
+    <!-- Tableau Articles -->
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th class="col-num">N°</th>
+                <th class="col-desc">DESCRIPTION</th>
+                <th class="col-qty">QTÉ</th>
+                <th class="col-obs">OBSERVATIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td class="col-num">{{ forloop.counter }}</td>
+                <td class="col-desc">{{ item.description }}</td>
+                <td class="col-qty">{{ item.quantity|floatformat:0 }}</td>
+                <td class="col-obs">{{ item.observation|default:"" }}</td>
+            </tr>
+            {% endfor %}
+            {% for i in "123456" %}
+            {% if forloop.counter > items|length and forloop.counter <= 6 %}
+            <tr>
+                <td class="col-num">&nbsp;</td>
+                <td class="col-desc">&nbsp;</td>
+                <td class="col-qty">&nbsp;</td>
+                <td class="col-obs">&nbsp;</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Signatures -->
+    <table class="signatures-table">
+        <tr>
+            <td>
+                <div class="signature-box">
+                    <div class="signature-title">LIVRÉ PAR: {% if delivery_note.delivered_by %}{{ delivery_note.delivered_by }}{% endif %}</div>
+                    <div class="signature-line"></div>
+                </div>
+            </td>
+            <td>
+                <div class="signature-box">
+                    <div class="signature-title">REÇU PAR (CLIENT):</div>
+                    <div class="signature-line"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Footer -->
+    <div class="footer-section">
+        <div class="footer-contact">
+            {{ company.phone }} | {{ company.address }}<br>
+            {{ company.email }}
+        </div>
+        <div class="footer-bar">
+            {{ company.phone2 }} | {{ company.address }}
+        </div>
+    </div>
+</body>
+</html>
