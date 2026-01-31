@@ -32,7 +32,7 @@ sudo apt install -y python3 python3-pip python3-venv python3-dev \
 # 3. Création de la base de données PostgreSQL
 echo "[3/10] Configuration PostgreSQL..."
 sudo -u postgres psql -c "CREATE DATABASE moultazam_db;" 2>/dev/null || echo "Base de données existe déjà"
-sudo -u postgres psql -c "CREATE USER moultazam_user WITH PASSWORD 'CHANGEZ_CE_MOT_DE_PASSE';" 2>/dev/null || echo "Utilisateur existe déjà"
+sudo -u postgres psql -c "CREATE USER moultazam_user WITH PASSWORD 'moultazam_password';" 2>/dev/null || echo "Utilisateur existe déjà"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE moultazam_db TO moultazam_user;"
 sudo -u postgres psql -c "ALTER USER moultazam_user CREATEDB;"
 
@@ -66,7 +66,7 @@ if [ ! -f ".env" ]; then
     echo "ALLOWED_HOSTS=72.62.237.47,localhost" >> .env
     echo "DB_NAME=moultazam_db" >> .env
     echo "DB_USER=moultazam_user" >> .env
-    echo "DB_PASSWORD=CHANGEZ_CE_MOT_DE_PASSE" >> .env
+    echo "DB_PASSWORD=moultazam_password" >> .env
     echo "DB_HOST=localhost" >> .env
     echo "DB_PORT=5432" >> .env
 fi
