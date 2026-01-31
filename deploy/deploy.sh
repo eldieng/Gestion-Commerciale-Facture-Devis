@@ -65,7 +65,7 @@ if [ ! -f ".env" ]; then
     cat > .env << EOF
 DEBUG=False
 SECRET_KEY=$SECRET
-ALLOWED_HOSTS=72.62.237.47,localhost,127.0.0.1
+ALLOWED_HOSTS=gestion-commercial.moultazam.org,72.62.237.47,localhost,127.0.0.1
 DATABASE_URL=postgresql://moultazam_user:moultazam_password@localhost:5432/moultazam_db
 EOF
 fi
