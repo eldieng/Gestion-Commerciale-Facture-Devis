@@ -17,6 +17,7 @@ import ProformaDetail from './pages/ProformaDetail'
 import DeliveryNotes from './pages/DeliveryNotes'
 import DeliveryNoteForm from './pages/DeliveryNoteForm'
 import DeliveryNoteDetail from './pages/DeliveryNoteDetail'
+import Users from './pages/Users'
 
 function PrivateRoute({ children }) {
   const { isAuthenticated, loading } = useAuth()
@@ -59,6 +60,7 @@ function App() {
             <Route path="delivery-notes/new" element={<DeliveryNoteForm />} />
             <Route path="delivery-notes/:id" element={<DeliveryNoteDetail />} />
             <Route path="delivery-notes/:id/edit" element={<DeliveryNoteForm />} />
+            <Route path="users" element={<Users />} />
           </Route>
         </Routes>
       </BrowserRouter>

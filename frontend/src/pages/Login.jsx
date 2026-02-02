@@ -31,9 +31,11 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-primary-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-            <span className="text-white text-2xl font-bold">M</span>
-          </div>
+          <img 
+            src="/logo.png" 
+            alt="Moultazam Distribution" 
+            className="w-32 h-32 mx-auto mb-4 object-contain"
+          />
           <h1 className="text-2xl font-bold text-gray-800">Moultazam Distribution</h1>
           <p className="text-gray-500 mt-2">Gestion Commerciale</p>
         </div>

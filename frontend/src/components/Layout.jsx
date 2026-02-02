@@ -10,7 +10,8 @@ import {
   Truck, 
   LogOut, 
   Menu, 
-  X 
+  X,
+  UserCog
 } from 'lucide-react'
 
 const navigation = [
@@ -19,6 +20,7 @@ const navigation = [
   { name: 'Factures', href: '/invoices', icon: FileText },
   { name: 'Devis / Proforma', href: '/proformas', icon: FileCheck },
   { name: 'Bordereaux', href: '/delivery-notes', icon: Truck },
+  { name: 'Utilisateurs', href: '/users', icon: UserCog },
 ]
 
 export default function Layout() {
@@ -48,9 +50,16 @@ export default function Layout() {
       `}>
         <div className="p-4 border-b border-primary-400">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold">Moultazam</h1>
-              <p className="text-sm text-primary-200">Distribution</p>
+            <div className="flex items-center gap-3">
+              <img 
+                src="/logo.png" 
+                alt="Moultazam" 
+                className="w-12 h-12 object-contain bg-white rounded-lg p-1"
+              />
+              <div>
+                <h1 className="text-xl font-bold">Moultazam</h1>
+                <p className="text-sm text-primary-200">Distribution</p>
+              </div>
             </div>
             <button 
               className="lg:hidden p-1 hover:bg-primary-400 rounded"
