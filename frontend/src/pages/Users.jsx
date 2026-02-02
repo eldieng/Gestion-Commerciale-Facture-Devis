@@ -29,7 +29,8 @@ export default function Users() {
   const fetchUsers = async () => {
     try {
       const response = await api.get('/accounts/users/')
-      setUsers(response.data)
+      const data = response.data
+      setUsers(Array.isArray(data) ? data : (data.results || []))
     } catch (error) {
       toast.error('Erreur lors du chargement des utilisateurs')
     } finally {
