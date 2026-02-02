@@ -40,6 +40,12 @@ export default function Users() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    if (formData.username.includes(' ')) {
+      toast.error('Le nom d\'utilisateur ne doit pas contenir d\'espaces')
+      return
+    }
+    
     try {
       if (editingUser) {
         const { password, ...updateData } = formData
@@ -53,7 +59,15 @@ export default function Users() {
       resetForm()
       fetchUsers()
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Erreur lors de l\'enregistrement')
+      const errorData = error.response?.data
+      if (errorData) {
+        const errorMessages = Object.entries(errorData)
+          .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+          .join('\n')
+        toast.error(errorMessages || 'Erreur lors de l\'enregistrement')
+      } else {
+        toast.error('Erreur lors de l\'enregistrement')
+      }
     }
   }
 

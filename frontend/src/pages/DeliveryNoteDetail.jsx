@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import api from '../services/api'
 import toast from 'react-hot-toast'
-import { ArrowLeft, Download, Edit } from 'lucide-react'
+import { ArrowLeft, Download, Edit, Printer, Eye, X } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
@@ -11,6 +11,8 @@ export default function DeliveryNoteDetail() {
   const navigate = useNavigate()
   const [deliveryNote, setDeliveryNote] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [showPreview, setShowPreview] = useState(false)
+  const [pdfUrl, setPdfUrl] = useState(null)
 
   useEffect(() => {
     fetchDeliveryNote()
@@ -43,6 +45,30 @@ export default function DeliveryNoteDetail() {
     }
   }
 
+  const handlePreviewPdf = async () => {
+    try {
+      const response = await api.get(`/delivery-notes/${id}/pdf/`, { responseType: 'blob' })
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
+      setPdfUrl(url)
+      setShowPreview(true)
+    } catch (error) {
+      toast.error('Erreur lors du chargement de l\'aperçu')
+    }
+  }
+
+  const handlePrint = async () => {
+    try {
+      const response = await api.get(`/delivery-notes/${id}/pdf/`, { responseType: 'blob' })
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
+      const printWindow = window.open(url)
+      printWindow.onload = () => {
+        printWindow.print()
+      }
+    } catch (error) {
+      toast.error('Erreur lors de l\'impression')
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -69,11 +95,43 @@ export default function DeliveryNoteDetail() {
           <Link to={`/delivery-notes/${id}/edit`} className="btn-secondary flex items-center gap-2">
             <Edit size={18} /> Modifier
           </Link>
+          <button onClick={handlePreviewPdf} className="btn-secondary flex items-center gap-2">
+            <Eye size={18} /> Aperçu
+          </button>
+          <button onClick={handlePrint} className="btn-secondary flex items-center gap-2">
+            <Printer size={18} /> Imprimer
+          </button>
           <button onClick={handleDownloadPdf} className="btn-primary flex items-center gap-2">
-            <Download size={18} /> Télécharger PDF
+            <Download size={18} /> PDF
           </button>
         </div>
       </div>
+
+      {/* Modal Aperçu PDF */}
+      {showPreview && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h2 className="text-lg font-semibold">Aperçu - {deliveryNote.number}</h2>
+              <div className="flex items-center gap-2">
+                <button onClick={handlePrint} className="btn-primary flex items-center gap-2">
+                  <Printer size={18} /> Imprimer
+                </button>
+                <button onClick={() => setShowPreview(false)} className="p-2 hover:bg-gray-100 rounded-lg">
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 p-4">
+              <iframe
+                src={pdfUrl}
+                className="w-full h-full border rounded-lg"
+                title="Aperçu PDF"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
